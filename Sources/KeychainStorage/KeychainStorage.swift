@@ -19,8 +19,10 @@ public struct KeychainStorageImpl: KeychainStorage {
        
         var ref: AnyObject?
         SecItemCopyMatching(query, &ref)
-        guard let dictionary = ref as? NSDictionary else { return nil }
-        guard let result = dictionary[kSecValueData] as? Data else { return nil }
+        guard
+            let dictionary = ref as? NSDictionary,
+            let result = dictionary[kSecValueData] as? Data
+        else { return nil }
         return try JSONDecoder().decode(Object.self, from: result)
     }
     
